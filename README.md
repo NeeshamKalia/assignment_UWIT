@@ -1,6 +1,12 @@
 # assignment_UWIT
 An assignent for the UW InfoTech by Neesham Kalia
 
+
+  TOKEN IS GIVEN IN AUTHORIZATION  TAB UNDER BEARER TOKEN -
+      - TASK ID FOR EDIT/ DELETE IS TAKE VIA REQUEST BODY
+      - USER ID IS GIVEN IN PARAMS
+
+
              MERN Stack Developer Assessment Round
 Create a task list having multiple features and the technologies mentioned. Kindly
 read the details thoroughly and proceed accordingly. Code quality should be
@@ -36,14 +42,3 @@ Forgot and Reset Password
 Task: Title, Description, Priority, Status, Created on
 Edit task
 Delete task
-
-
-
-
-
-
-
-
-For any queries, you can directly call on +91 9779833617 or Google Chat -
-MD and CTO - Mahesh Singla
-Director HR - Nikita Mittal

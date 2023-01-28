@@ -23,7 +23,7 @@ const createUser = async function (req, res) {
   if(!validation.isValid(name)) {
     return res.status(400).send({ status: false, message: "Please enter a valid name" }) }
 
-  if (!/^[a-zA-Z]+$/.test(name)) {
+  if (!/^[a-z ,.'-]+$/i.test(name)) {
      return res.status(400).send({ status: false, message: "name should alpha characters" })};
 
                             //email validation
