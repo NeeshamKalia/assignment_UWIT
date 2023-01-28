@@ -144,7 +144,7 @@ try{
 
 const deleteTask = async function(req, res) {
     try{
-      let taskId = req.params.taskId
+      let taskId = req.body.taskId;
       if (!(validation.isValidObjectId(taskId))){
         return res.status(400).send({status: false, message: "taskId not valid"})
       }

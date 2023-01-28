@@ -31,7 +31,7 @@ const checkAuth = async function (req, res, next) {
   };
   const authrz = function (req, res, next) {
     try {
-
+      let userId = req.params.userId;
 
       bearerToken = (req.header('Authorization', 'Bearer Token')).split(' ')[1]
       let decodedToken = jwt.verify(bearerToken, "manUnited");
