@@ -1,26 +1,29 @@
 const taskModel=require("../models/taskModel.js")
+const userModel=require("../models/userModel.js");
 const moment = require("moment");
 const validation = require('../utils/validation');
 
 
-//================edit creation ===============
+//================create ===============
 const createTask = async function (req, res) {
     try{
     let Data = req.body
      //validation of request body --
   if (!validation.isValidRequestBody(Data)) { return res.status(400).send({ status: false, message: "Please enter details"}) }
 
-  let {title, description, Priority, Status, createdOn} = Data
+  let {title, Description, Priority, Status, createdOn} = Data
+
 //title
   if(!validation.isValid(title))  {
     return res.status(400).send({status:false, message: "please use right Title"})
   }
-  const titleAlreadyUsed = await productModel.findOne({title})
-  if(titleAlreadyUsed) { return res.status(400).send({ status:false, message:`${title} is already in use.Enter another title`})}
+  const titleAlreadyUsed = await taskModel.findOne({title:Data.title})
 
-  //description
-  if(!validation.isValid(description))  {
-    return res.status(400).send({status:false, message: "Needs a Description"})
+  if(titleAlreadyUsed != null) { return res.status(400).send({ status:false, message:`${title} is already in use.Enter another title`})}
+
+  //description--
+  if(!validation.isValid(Description))  {
+    return res.status(400).send({status:false, message: "Needs a Description with capital D"})
   }
 //Priority
 if(!validation.isValid(Priority))  {
@@ -46,7 +49,8 @@ if(!validation.isValid(createdOn))   {
   if(!(moment(createdOn, "MM/DD/YYYY", true).isValid())){
     return res.send({status: false, message: "please enter date in MM/DD/YYYY format"})
   }
-const newData = {title, description, Priority, Status, createdOn}
+const newData = {title, Description, Priority, Status, createdOn}
+//creating a new task;
 const savedData = await taskModel.create(newData);
   return res.status(201).send({ status: true, message: "Success", data: savedData, });
 
@@ -58,18 +62,23 @@ const savedData = await taskModel.create(newData);
   //================edit task ===============
 const updateTask = async function(req, res)  {
 try{
-    let taskId = req.params.taskId;
+    let userId = req.params.userId;
     let Data = req.body;
-    if (!(validation.isValidObjectId(taskId))){
-       return res.status(400).send({status: false, message: "taskId not valid"})
-    }
+    let {taskId,title, Description, Priority, Status, createdOn} = Data;
+    if(!validation.isValid(taskId))  {
+        return res.status(400).send({status:false, message: "please provide valid taskId"})
+      }
+      if (!(validation.isValidObjectId(taskId))){
+        return res.status(400).send({status: false, message: "taskId not valid"})
+      }
+
     if (!validation.isValidRequestBody(Data)){
          return res.status(400).send({ status: false, message: "Please enter details"}) }
     let task = await taskModel.findOne({_id: taskId, isDeleted: false})
     if(!task) {
           return res.status(404).send({status: false, message: "Task not found"})
         }
-    let {title, description, Priority, Status, createdOn} = Data;
+
 
   const taskUpdate = {};
   if(title){
@@ -86,11 +95,11 @@ try{
      taskUpdate.title = title
    }
 
-   if(description){
-   if(!validation.isValid(description))  {
+   if(Description){
+   if(!validation.isValid(Description))  {
      return res.status(400).send({status:false, message: "needs a valid Description"})
    }
-    taskUpdate.description= description
+    taskUpdate.Description= Description
  }
 
 
