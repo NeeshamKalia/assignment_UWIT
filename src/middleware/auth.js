@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const checkAuth = function (req, res, next) {
+const checkAuth = async function (req, res, next) {
     try {
+        let userId = req.params.userId;
+        if(!userId){ return res.status(400).send({status:false,message:"UserId is required"})}
+        let user = await userModel.findOne({_id: userId});
+      if(!user){return res.status(404).send({status: false   , message: "User not found."});}
       let token = req.header('Authorization', 'Bearer Token');
 
       if (!token)
@@ -30,8 +34,7 @@ const checkAuth = function (req, res, next) {
       bearerToken = (req.header('Authorization', 'Bearer Token')).split(' ')[1]
       let decodedToken = jwt.verify(bearerToken, "manUnited");
 
-      let userId = req.params.userId;
-      if(!userId){ return res.status(400).send({status:false,message:"UserId is required"})}
+
       if (!mongoose.isValidObjectId(userId)) { return res.status(400).send({ status: false, message: "invalid userId" }) }
       if (userId.toString() != decodedToken.userId) {return res.status(403).send({status: false, message: "unauthorized"});}
       next();
